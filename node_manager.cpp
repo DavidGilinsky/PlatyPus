@@ -12,3 +12,7 @@ int AddNode(platyNode node){
 int DeleteNode(int nodeID){
     return 0;
 }
+
+int InsertNode(int beforeNode, platyNode node){
+
+}
