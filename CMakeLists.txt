@@ -3,7 +3,7 @@ project(PlatyPus)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(SOURCE_FILES main.cpp main.cpp main.h sig_handler.cpp sig_handler.h tcp_listener.cpp tcp_listener.h node_manager.cpp node_manager.h)
+set(SOURCE_FILES main.cpp main.cpp main.h sig_handler.cpp sig_handler.h tcp_listener.cpp tcp_listener.h node_manager.cpp node_manager.h data_integrity.cpp data_integrity.h locks.h locks.cpp)
 add_executable(PlatyPus ${SOURCE_FILES})
 
 target_link_libraries (${PROJECT_NAME} pthread)

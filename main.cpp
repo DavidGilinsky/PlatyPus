@@ -3,13 +3,19 @@
 //
 
 #include <cstdio>
+#include <ctime>
 #include <iostream>
 #include <thread>
+
 #include "main.h"
+#include "node_manager.h"
 
 using namespace std;
 
+//Initialize global variables
+
 volatile int sig_caught=0;
+
 
 int main() {
     int return_value=0;
@@ -17,6 +23,7 @@ int main() {
     std::cout << "Hello, World!" << std::endl;
 
     return_value=register_signals();
+
     if(return_value!=0){
         printf("Failed to register %d\n",return_value);
     }

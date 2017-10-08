@@ -2,17 +2,28 @@
 // Created by gilinsky on 10/5/17.
 //
 
+#include <cstring>
+#include <ctime>
+
 #include "node_manager.h"
-#include "main.h"
 
-int AddNode(platyNode node){
+platyNode *nodeCreate(){
+    platyNode * node;
+    node = new platyNode;
+    node->nodeCreated=time(0);
+    return node;
+
+};
+
+int AddNode(platyNode *nodeArray, platyNode node){
     return 0;
 }
 
-int DeleteNode(int nodeID){
+int DeleteNode(platyNode *nodeArray, int nodeID){
     return 0;
 }
 
-int InsertNode(int beforeNode, platyNode node){
-
+int resetNodeArray(platyNode *nodeArray){
+    memset(nodeArray,255,255*sizeof(nodeArray));
 }
+
