@@ -7,6 +7,7 @@
 #define PLATYPUS_MAIN_H
 
 #include <csignal>
+#include "node_manager.h"
 
 extern volatile sig_atomic_t sig_caught;
 
@@ -14,6 +15,7 @@ extern volatile sig_atomic_t sig_caught;
 extern void sig_handler(int);
 extern int register_signals();
 extern int tcp_listener();
+extern int returnNodeID(platyNode**,int);
 
 
 #endif //PLATYPUS_MAIN_H

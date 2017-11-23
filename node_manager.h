@@ -9,7 +9,7 @@
 #include <netinet/in.h>
 
 
-typedef struct {
+struct platyNode {
     time_t nodeCreated;
     char nodeID;
     char nodeName[80];
@@ -21,7 +21,7 @@ typedef struct {
     int nodeRxSocket;
     bool nodeJeopardy;
     bool nodeStructIncoherent;
-} platyNode;
+};
 
 
 

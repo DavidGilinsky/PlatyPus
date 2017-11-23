@@ -7,8 +7,8 @@
 #include <iostream>
 #include <thread>
 
-#include "main.h"
 #include "node_manager.h"
+#include "main.h"
 
 using namespace std;
 
@@ -16,6 +16,8 @@ using namespace std;
 
 volatile int sig_caught=0;
 
+// Setup memory for structures to hold node information.
+struct platyNode **node_array = static_cast<platyNode **>(malloc(10 * sizeof(struct platyNode *)));
 
 int main() {
     int return_value=0;
@@ -26,8 +28,23 @@ int main() {
 
     if(return_value!=0){
         printf("Failed to register %d\n",return_value);
+    } else {
+        printf("Signals registered\n");
     }
 
+    // Populate each element of node_array with a pointer to a block of memory to hold a node structure
+     for (int i = 0; i < 10; i++) {
+         node_array[i] = static_cast<platyNode *>(malloc(sizeof(struct platyNode)));
+     }
+
+    //test node stuff
+     node_array[0]->nodeID=1;
+
+     for (int i=0; i<10; i++) {
+         printf("Node %d ID: %d\n",i,node_array[i]->nodeID);
+     }
+
+    printf("Node 0 ID %d\n", returnNodeID(node_array,0));
 
     thread net_listener(tcp_listener);
 
