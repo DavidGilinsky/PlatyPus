@@ -6,7 +6,7 @@
 #include <ctime>
 #include <iostream>
 #include <thread>
-
+#include <unistd.h>
 #include "node_manager.h"
 #include "main.h"
 
@@ -50,10 +50,17 @@ int main() {
 
     net_listener.detach();
 
-    printf("Started listener at id %d\n",net_listener.get_id());
+    printf("Started listener at id %s\n",net_listener.get_id());
+
+    thread broadcast_listener(udp_listener);
+    broadcast_listener.detach();
+    printf("Started broadcast listener at id %s\n",broadcast_listener.get_id());
+
+
 
     while(1){
-
+        udp_broadcast();
+        usleep(10000000);
     }
 
     return 0;

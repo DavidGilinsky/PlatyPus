@@ -7,7 +7,7 @@
 
 #include <arm_neon.h>
 #include <netinet/in.h>
-
+#include "sensor_data.h"
 
 struct platyNode {
     time_t nodeCreated;
@@ -21,6 +21,8 @@ struct platyNode {
     int nodeRxSocket;
     bool nodeJeopardy;
     bool nodeStructIncoherent;
+    bool haveDisplay;
+    sensorData sensor;
 };
 
 
