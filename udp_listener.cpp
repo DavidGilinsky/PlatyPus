@@ -82,6 +82,10 @@ int udp_listener() {
       continue;
     }
 
+    if(strstr(msg,"PlatyPus")!=NULL){
+      printf("Found PlatyPus Node at %s\n",inet_ntoa(cliAddr.sin_addr));
+    }
+
     /* print received message */
     printf("from %s:UDP%u : %s \n",
            inet_ntoa(cliAddr.sin_addr),
