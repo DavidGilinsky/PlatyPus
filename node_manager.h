@@ -7,6 +7,7 @@
 
 #include <arm_neon.h>
 #include <netinet/in.h>
+#include <ifaddrs.h>
 #include "sensor_data.h"
 
 struct platyNode {
@@ -14,6 +15,7 @@ struct platyNode {
     char nodeID;
     char nodeName[80];
     char nodeAddress[INET6_ADDRSTRLEN];
+    ifaddrs nodeInterface;
     bool nodeAlive;
     time_t nodeLastReached;
     bool nodeSelf;

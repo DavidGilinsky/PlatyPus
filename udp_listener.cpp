@@ -16,14 +16,14 @@
 
 
 #include "udp_listener.h"
-
+#include "node_manager.h"
 
 #define LOCAL_SERVER_PORT 1500
 #define MAX_MSG 100
 
 using namespace std;
 
-int udp_listener() {
+int udp_listener(platyNode **nodeArray) {
 
   int sd, rc, n;
   socklen_t cliLen;
@@ -84,6 +84,10 @@ int udp_listener() {
 
     if(strstr(msg,"PlatyPus")!=NULL){
       printf("Found PlatyPus Node at %s\n",inet_ntoa(cliAddr.sin_addr));
+      struct sockaddr_in *pIfc = (struct sockaddr_in *)nodeArray[0]->nodeInterface.ifa_addr;
+      if(cliAddr.sin_addr.s_addr==pIfc->sin_addr.s_addr) {
+        printf("oh wait... that's me!\n");
+      }
     }
 
     /* print received message */

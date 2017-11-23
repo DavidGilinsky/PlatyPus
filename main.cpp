@@ -46,13 +46,15 @@ int main() {
 
     printf("Node 0 ID %d\n", returnNodeID(node_array,0));
 
+    populateNodeSelf(node_array);
+
     thread net_listener(tcp_listener);
 
     net_listener.detach();
 
     printf("Started listener at id %s\n",net_listener.get_id());
 
-    thread broadcast_listener(udp_listener);
+    thread broadcast_listener(udp_listener,node_array);
     broadcast_listener.detach();
     printf("Started broadcast listener at id %s\n",broadcast_listener.get_id());
 

@@ -15,7 +15,8 @@ extern volatile sig_atomic_t sig_caught;
 extern void sig_handler(int);
 extern int register_signals();
 extern int tcp_listener();
-extern int udp_listener();
+extern int udp_listener(platyNode**);
+extern int populateNodeSelf(platyNode**);
 extern int udp_broadcast();
 extern int returnNodeID(platyNode**,int);
 
