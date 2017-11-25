@@ -30,7 +30,8 @@ int udp_listener(platyNode **nodeArray) {
   struct sockaddr_in cliAddr, servAddr;
   char msg[MAX_MSG];
   int broadcast = 1;
-
+  unsigned char mac_address[6];
+  char platyIdent[9];
   printf("Creating udp listener socket\n");
 
   /* socket creation */
@@ -84,16 +85,31 @@ int udp_listener(platyNode **nodeArray) {
 
     if(strstr(msg,"PlatyPus")!=NULL){
       printf("Found PlatyPus Node at %s\n",inet_ntoa(cliAddr.sin_addr));
-      struct sockaddr_in *pIfc = (struct sockaddr_in *)nodeArray[0]->nodeInterface.ifa_addr;
-      if(cliAddr.sin_addr.s_addr==pIfc->sin_addr.s_addr) {
-        printf("oh wait... that's me!\n");
+      memcpy(platyIdent,msg,8);
+      platyIdent[8]=0;
+      if(sizeof(msg)>14){
+        memcpy(mac_address,msg+8,6);
       }
-    }
+//      struct sockaddr_in *pIfc = (struct sockaddr_in *)nodeArray[0]->nodeInterface.ifa_addr;
+//      if(cliAddr.sin_addr.s_addr==pIfc->sin_addr.s_addr) {
+      if(memcmp(mac_address,nodeArray[0]->nodeMACAddress,6)==0){
+        printf("oh wait... that's me!\n");
+          }
+
+      }
+
 
     /* print received message */
-    printf("from %s:UDP%u : %s \n",
+    printf("from %s:UDP%u : %s %02X:%02X:%02X:%02X:%02X:%02X:\n",
            inet_ntoa(cliAddr.sin_addr),
-           ntohs(cliAddr.sin_port),msg);
+           ntohs(cliAddr.sin_port),platyIdent,
+            mac_address[0],
+           mac_address[1],
+           mac_address[2],
+           mac_address[3],
+           mac_address[4],
+           mac_address[5]
+          );
 
 
 

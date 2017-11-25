@@ -61,7 +61,7 @@ int main() {
 
 
     while(1){
-        udp_broadcast();
+        udp_broadcast(node_array);
         usleep(10000000);
     }
 

@@ -43,6 +43,11 @@ int populateNodeSelf(platyNode **nodeArray)
 {
     ifaddrs *addrs,*tmp;
 
+    struct ifreq ifr;
+    struct ifconf ifc;
+    char buf[1024];
+    int success = 0;
+
     getifaddrs(&addrs);
     tmp = addrs;
 
@@ -75,4 +80,40 @@ int populateNodeSelf(platyNode **nodeArray)
     }
 
 freeifaddrs(addrs);
+
+    int sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_IP);
+    if (sock == -1) { /* handle error*/ };
+
+    ifc.ifc_len = sizeof(buf);
+    ifc.ifc_buf = buf;
+    if (ioctl(sock, SIOCGIFCONF, &ifc) == -1) { /* handle error */ }
+
+    struct ifreq* it = ifc.ifc_req;
+    const struct ifreq* const end = it + (ifc.ifc_len / sizeof(struct ifreq));
+
+    for (; it != end; ++it) {
+        strcpy(ifr.ifr_name, it->ifr_name);
+        if (ioctl(sock, SIOCGIFFLAGS, &ifr) == 0) {
+            if (! (ifr.ifr_flags & IFF_LOOPBACK)) { // don't count loopback
+                if (ioctl(sock, SIOCGIFHWADDR, &ifr) == 0) {
+                    success = 1;
+                    break;
+                }
+            }
+        }
+        else { /* handle error */ }
+    }
+
+    unsigned char mac_address[6];
+
+    if (success) memcpy(nodeArray[0]->nodeMACAddress, ifr.ifr_hwaddr.sa_data, 6);
+    for(int x=0;x<6;x++){
+        printf("%02X ",nodeArray[0]->nodeMACAddress[x]);
+    }
+        printf("\n");
+}
+
+int nodeCheckHaveAddress(platyNode **nodeArray, in_addr_t address)
+{
+
 }

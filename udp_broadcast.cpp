@@ -20,14 +20,15 @@
 
 
 #include "udp_broadcast.h"
+#include "node_manager.h"
 
-
-int udp_broadcast() {
+int udp_broadcast(platyNode **nodeArray) {
 
   int sd, rc, i;
   struct sockaddr_in cliAddr, remoteServAddr;
   struct hostent *h;
   int broadcast = 1;
+    char outputBuffer[14];
 
 
   /* get server IP address (no check if input is IP address or DNS name */
@@ -68,9 +69,13 @@ int udp_broadcast() {
     exit(1);
   }
 
+    /* build output buffer */
 
+    memcpy(outputBuffer,"PlatyPus",8);
+    memcpy(outputBuffer+8,nodeArray[0]->nodeMACAddress,6);
   /* send data */
-    rc = sendto(sd, "PlatyPus", strlen("PlatyPus")+1, 0,
+
+    rc = sendto(sd, outputBuffer, strlen(outputBuffer)+1, 0,
                 (struct sockaddr *) &remoteServAddr,
                 sizeof(remoteServAddr));
 

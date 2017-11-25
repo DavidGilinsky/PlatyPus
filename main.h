@@ -17,7 +17,7 @@ extern int register_signals();
 extern int tcp_listener();
 extern int udp_listener(platyNode**);
 extern int populateNodeSelf(platyNode**);
-extern int udp_broadcast();
+extern int udp_broadcast(platyNode**);
 extern int returnNodeID(platyNode**,int);
 
 
