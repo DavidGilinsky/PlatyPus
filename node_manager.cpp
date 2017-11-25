@@ -34,6 +34,17 @@ int nodeArrayAdd(platyNode **nodeArray, unsigned char *mac_address, char *ip_add
     return(-1); // no empty array elements
 }
 
+int nodeArrayCount(platyNode **nodeArray){
+    int count=0;
+    unsigned char blankMAC[] = {0,0,0,0,0,0};
+    for(int x=0; x<10; x++) {
+        if(memcmp(blankMAC,nodeArray[x]->nodeMACAddress,6)!=0){
+            count++;
+        }
+    }
+    return(count);
+}
+
 int DeleteNode(platyNode *nodeArray, int nodeID){
     return 0;
 }

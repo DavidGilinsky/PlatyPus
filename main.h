@@ -19,7 +19,7 @@ extern int udp_listener(platyNode**);
 extern int nodePopulateSelf(platyNode **);
 extern int udp_broadcast(platyNode**);
 extern int returnNodeID(platyNode**,int);
-
+extern int nodeArrayCount(platyNode**);
 
 #endif //PLATYPUS_MAIN_H
 

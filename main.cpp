@@ -65,6 +65,7 @@ int main() {
 
     while(1){
         udp_broadcast(node_array);
+        printf("Node count %d\n",nodeArrayCount(node_array));
         usleep(10000000);
     }
 
