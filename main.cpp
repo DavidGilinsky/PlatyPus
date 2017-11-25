@@ -7,6 +7,7 @@
 #include <iostream>
 #include <thread>
 #include <unistd.h>
+#include <cstring>
 #include "node_manager.h"
 #include "main.h"
 
@@ -35,6 +36,8 @@ int main() {
     // Populate each element of node_array with a pointer to a block of memory to hold a node structure
      for (int i = 0; i < 10; i++) {
          node_array[i] = static_cast<platyNode *>(malloc(sizeof(struct platyNode)));
+         // set all  mac addresses to 00:00:00:00
+         memset(node_array[i]->nodeMACAddress,0,6);
      }
 
     //test node stuff
@@ -46,7 +49,7 @@ int main() {
 
     printf("Node 0 ID %d\n", returnNodeID(node_array,0));
 
-    populateNodeSelf(node_array);
+    nodePopulateSelf(node_array);
 
     thread net_listener(tcp_listener);
 

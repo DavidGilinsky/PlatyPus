@@ -14,7 +14,7 @@ struct platyNode {
     time_t nodeCreated;
     char nodeID;
     char nodeName[80];
-    char nodeIPAddress[INET6_ADDRSTRLEN];
+    char nodeIPAddress[INET_ADDRSTRLEN];
     unsigned char nodeMACAddress[6];
     ifaddrs nodeInterface;
     bool nodeAlive;

@@ -22,8 +22,16 @@ platyNode *nodeCreate(){
 
 };
 
-int AddNode(platyNode *nodeArray, platyNode node){
-    return 0;
+int nodeArrayAdd(platyNode **nodeArray, unsigned char *mac_address, char *ip_address){
+    unsigned char blankMAC[] = {0,0,0,0,0,0};
+    for(int x=1; x<10; x++) {
+        if(memcmp(blankMAC,nodeArray[x]->nodeMACAddress,6)==0) {
+            memcpy(nodeArray[x]->nodeMACAddress,mac_address,6);
+            memcpy(nodeArray[x]->nodeIPAddress,ip_address,INET_ADDRSTRLEN);
+            return(x);
+        }
+    }
+    return(-1); // no empty array elements
 }
 
 int DeleteNode(platyNode *nodeArray, int nodeID){
@@ -39,7 +47,7 @@ int returnNodeID(platyNode **nodeArray, int element)
     return(nodeArray[element]->nodeID);
 }
 
-int populateNodeSelf(platyNode **nodeArray)
+int nodePopulateSelf(platyNode **nodeArray)
 {
     ifaddrs *addrs,*tmp;
 
@@ -67,11 +75,11 @@ int populateNodeSelf(platyNode **nodeArray)
                     nodeArray[0]->nodeInterface.ifa_name =tmp->ifa_name;
                     nodeArray[0]->nodeInterface.ifa_addr =tmp->ifa_addr;
                     nodeArray[0]->nodeInterface.ifa_ifu.ifu_broadaddr =tmp->ifa_ifu.ifu_broadaddr;
-
+                    memcpy(nodeArray[0]->nodeIPAddress,inet_ntoa(pAddr->sin_addr),INET_ADDRSTRLEN);
                     struct sockaddr_in *pIfc = (struct sockaddr_in *)nodeArray[0]->nodeInterface.ifa_addr;
                     printf("Live Interface %s found - %s.\n",
                            nodeArray[0]->nodeInterface.ifa_name,
-                           inet_ntoa(pIfc->sin_addr));
+                           nodeArray[0]->nodeIPAddress);
                 }
             }
         }

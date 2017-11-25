@@ -96,8 +96,21 @@ int udp_listener(platyNode **nodeArray) {
         printf("oh wait... that's me!\n");
           printf("At node array position %d\n",nodeCheckHaveAddress(nodeArray,mac_address));
           } else {
-        printf("That's not me. Do we know this node? %d\n",
-          nodeCheckHaveAddress(nodeArray,mac_address));
+              if(nodeCheckHaveAddress(nodeArray,mac_address)==-1)
+              {
+                int nodeIndex=nodeArrayAdd(nodeArray,mac_address,inet_ntoa(cliAddr.sin_addr));
+                  if(nodeIndex != -1) {
+                    printf("Adding node at position %d %s\n",
+                           nodeIndex,
+                          nodeArray[nodeIndex]->nodeIPAddress);
+                  } else {
+                    printf("Node Array Full. Cannot add %s\n",
+                      inet_ntoa(cliAddr.sin_addr));
+                  }
+              } else {
+                printf("Already know node %s\n",
+                  inet_ntoa(cliAddr.sin_addr));
+              }
       }
 
       }

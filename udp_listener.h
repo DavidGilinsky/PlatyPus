@@ -6,5 +6,5 @@
 #define PLATYPUS_UDP_LISTENER_H
 
 extern int nodeCheckHaveAddress(platyNode**,unsigned char[6]);
-
+extern int nodeArrayAdd(platyNode**, unsigned char[6], char[INET_ADDRSTRLEN]);
 #endif //PLATYPUS_UDP_LISTENER_H
