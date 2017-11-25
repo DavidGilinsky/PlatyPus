@@ -15,8 +15,8 @@
 #include <stdlib.h>
 
 
-#include "udp_listener.h"
 #include "node_manager.h"
+#include "udp_listener.h"
 
 #define LOCAL_SERVER_PORT 1500
 #define MAX_MSG 100
@@ -94,7 +94,11 @@ int udp_listener(platyNode **nodeArray) {
 //      if(cliAddr.sin_addr.s_addr==pIfc->sin_addr.s_addr) {
       if(memcmp(mac_address,nodeArray[0]->nodeMACAddress,6)==0){
         printf("oh wait... that's me!\n");
-          }
+          printf("At node array position %d\n",nodeCheckHaveAddress(nodeArray,mac_address));
+          } else {
+        printf("That's not me. Do we know this node? %d\n",
+          nodeCheckHaveAddress(nodeArray,mac_address));
+      }
 
       }
 

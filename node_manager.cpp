@@ -113,7 +113,12 @@ freeifaddrs(addrs);
         printf("\n");
 }
 
-int nodeCheckHaveAddress(platyNode **nodeArray, in_addr_t address)
+int nodeCheckHaveAddress(platyNode **nodeArray, unsigned char *mac_address)
 {
-
+    for(int x=0; x<10; x++){
+        if(memcmp(nodeArray[x]->nodeMACAddress,mac_address,6)==0){
+            return(x);
+        }
+    }
+    return(-1);
 }
