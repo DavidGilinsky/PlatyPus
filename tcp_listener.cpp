@@ -13,26 +13,50 @@
 #include <wait.h>
 #include <arpa/inet.h>
 
+#include "node_manager.h"
 #include "tcp_listener.h"
+#include "udp_listener.h"
 
 using namespace std;
 
 extern float oneWireReadTemperature(void);
 
-void connection_handler(int fd, char address[INET6_ADDRSTRLEN])
+void connection_handler(platyNode **nodeArray,int fd, char address[INET6_ADDRSTRLEN])
 {
     int read_size;
     char client_message[2000];
     float temperature;
+    unsigned char mac_address[6];
+    int nodeArrayIndex;
+
+    /* Data format
+     * [9]PlatyNode
+     * [6]Mac address
+     * [2]Command
+     * ...data...
+     */
+
 
     while((read_size=recv(fd,client_message,2000,0))>0)
     {
         //echo the message back to the client
-        temperature=oneWireReadTemperature();
-        write(fd,client_message,strlen(client_message));
-        sprintf(client_message,"%.2f",temperature/1000);
-        write(fd,client_message,strlen(client_message));
-
+//        temperature=oneWireReadTemperature();
+//        write(fd,client_message,strlen(client_message));
+//        sprintf(client_message,"%.2f",temperature/1000);
+//        write(fd,client_message,strlen(client_message));
+        if(strstr(client_message,"PlatyNode")!=NULL){
+           if(strlen(client_message)>14){
+               memcpy(mac_address,client_message+9,6);
+               printf("TCP message from %s", mac_address);
+               nodeArrayIndex=nodeCheckHaveAddress(
+                      nodeArray,mac_address);
+               if(nodeArrayIndex != -1) {
+                   printf("Message from node %d\n", nodeArrayIndex);
+               } else {
+                   printf("Message from unknown node %s\n", mac_address);
+               }
+           }
+        }
     }
     if(read_size==0){
         printf("%s disconnected.\n",address);
@@ -67,7 +91,7 @@ void *get_in_addr(struct sockaddr *sa)
     return &(((struct sockaddr_in6*)sa)->sin6_addr);
 }
 
-int tcp_listener(void)
+int tcp_listener(platyNode **nodeArray)
 {
     int sockfd, new_fd, read_size;  // listen on sock_fd, new connection on new_fd
     struct addrinfo hints, *servinfo, *p;
@@ -151,7 +175,7 @@ int tcp_listener(void)
             close(sockfd); // child doesn't need the listener
 
 
-            thread connection(connection_handler,new_fd,s);
+            thread connection(connection_handler,nodeArray,new_fd,s);
             connection.detach();
 
             while(1){

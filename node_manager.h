@@ -21,7 +21,9 @@ struct platyNode {
     time_t nodeLastReached;
     bool nodeSelf;
     int nodeTxSocket;
+    int nodeTxFd;
     int nodeRxSocket;
+    int nodeRxFd;
     bool nodeJeopardy;
     bool nodeStructIncoherent;
     bool haveDisplay;

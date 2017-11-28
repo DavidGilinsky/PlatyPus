@@ -40,6 +40,7 @@ int main() {
          memset(node_array[i]->nodeMACAddress,0,6);
      }
 
+
     //test node stuff
      node_array[0]->nodeID=1;
 
@@ -51,7 +52,7 @@ int main() {
 
     nodePopulateSelf(node_array);
 
-    thread net_listener(tcp_listener);
+    thread net_listener(tcp_listener,node_array);
 
     net_listener.detach();
 
