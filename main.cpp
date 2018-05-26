@@ -2,6 +2,8 @@
 // Created by gilinsky on 10/5/17.
 //
 
+#define CATCH_CONFIG_RUNNER
+
 #include <cstdio>
 #include <ctime>
 #include <iostream>
@@ -10,6 +12,8 @@
 #include <cstring>
 #include "node_manager.h"
 #include "main.h"
+#include "catch.h"
+#include "osSignals.h"
 
 using namespace std;
 
@@ -20,10 +24,15 @@ volatile int sig_caught=0;
 // Setup memory for structures to hold node information.
 struct platyNode **node_array = static_cast<platyNode **>(malloc(10 * sizeof(struct platyNode *)));
 
-int main() {
+int main( int argc, char* argv[] ) {
+    int result = Catch::Session().run( argc, argv );
     int return_value=0;
 
     std::cout << "Hello, World!" << std::endl;
+
+    osSignals signals;
+
+    signals.registerAll();
 
     return_value=register_signals();
 
@@ -69,6 +78,6 @@ int main() {
         usleep(10000000);
     }
 
-    return 0;
+    return result;
 }
 
