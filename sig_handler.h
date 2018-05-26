@@ -5,7 +5,6 @@
 #ifndef PLATYPUS_SIG_HANDLER_H
 #define PLATYPUS_SIG_HANDLER_H
 
-#endif //PLATYPUS_SIG_HANDLER_H
 
 //Signal handling functions prototypes
 
@@ -21,3 +20,4 @@ void sig_pipe(int sig_caught);
 void sig_alrm(int sig_caught);
 void sig_term(int sig_caught);
 
+#endif //PLATYPUS_SIG_HANDLER_H

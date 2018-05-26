@@ -2,36 +2,82 @@
 // Created by gilinsky on 10/5/17.
 //
 
+#define CATCH_CONFIG_RUNNER
+
 #include <cstdio>
+#include <ctime>
 #include <iostream>
 #include <thread>
+#include <unistd.h>
+#include <cstring>
+#include "node_manager.h"
 #include "main.h"
+#include "catch.h"
+#include "osSignals.h"
 
 using namespace std;
 
+//Initialize global variables
+
 volatile int sig_caught=0;
 
-int main() {
+// Setup memory for structures to hold node information.
+struct platyNode **node_array = static_cast<platyNode **>(malloc(10 * sizeof(struct platyNode *)));
+
+int main( int argc, char* argv[] ) {
+    int result = Catch::Session().run( argc, argv );
     int return_value=0;
 
     std::cout << "Hello, World!" << std::endl;
 
+    osSignals signals;
+
+    signals.registerAll();
+
     return_value=register_signals();
+
     if(return_value!=0){
         printf("Failed to register %d\n",return_value);
+    } else {
+        printf("Signals registered\n");
     }
 
+    // Populate each element of node_array with a pointer to a block of memory to hold a node structure
+     for (int i = 0; i < 10; i++) {
+         node_array[i] = static_cast<platyNode *>(malloc(sizeof(struct platyNode)));
+         // set all  mac addresses to 00:00:00:00
+         memset(node_array[i]->nodeMACAddress,0,6);
+     }
+
+    //test node stuff
+     node_array[0]->nodeID=1;
+
+     for (int i=0; i<10; i++) {
+         printf("Node %d ID: %d\n",i,node_array[i]->nodeID);
+     }
+
+    printf("Node 0 ID %d\n", returnNodeID(node_array,0));
+
+    nodePopulateSelf(node_array);
 
     thread net_listener(tcp_listener);
 
     net_listener.detach();
 
-    printf("Started listener at id %d\n",net_listener.get_id());
+    printf("Started listener at id %s\n",net_listener.get_id());
+
+    thread broadcast_listener(udp_listener,node_array);
+    broadcast_listener.detach();
+    printf("Started broadcast listener at id %s\n",broadcast_listener.get_id());
+
+
 
     while(1){
-
+        udp_broadcast(node_array);
+        printf("Node count %d\n",nodeArrayCount(node_array));
+        usleep(10000000);
     }
 
-    return 0;
+    return result;
 }
 

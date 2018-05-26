@@ -17,16 +17,22 @@
 
 using namespace std;
 
+extern float oneWireReadTemperature(void);
 
 void connection_handler(int fd, char address[INET6_ADDRSTRLEN])
 {
     int read_size;
     char client_message[2000];
+    float temperature;
 
     while((read_size=recv(fd,client_message,2000,0))>0)
     {
         //echo the message back to the client
+        temperature=oneWireReadTemperature();
         write(fd,client_message,strlen(client_message));
+        sprintf(client_message,"%.2f",temperature/1000);
+        write(fd,client_message,strlen(client_message));
+
     }
     if(read_size==0){
         printf("%s disconnected.\n",address);
