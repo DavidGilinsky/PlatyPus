@@ -8,3 +8,5 @@ add_executable(PlatyPus ${SOURCE_FILES})
 
 target_link_libraries (${PROJECT_NAME} pthread)
 
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfpu=neon -I/usr/arm-linux-gnueabi/include")

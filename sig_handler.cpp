@@ -2,7 +2,7 @@
 // Created by gilinsky on 10/5/17.
 //
 
-#include <bits/signum.h>
+#include <signal.h>
 #include "sig_handler.h"
 #include "main.h"
 
