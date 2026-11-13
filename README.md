@@ -57,10 +57,11 @@ cmake --build build
 ```
 
 **It does not compile on a current glibc.** `sig_handler.cpp` includes
-`<bits/signum.h>`, a glibc-internal header that was removed in glibc 2.26
-(2017). Replacing that include with `<csignal>` gets it building again on
-Ubuntu 24.04 with GCC 13, with one format warning about printing a
-`std::thread::id` through `%d`. The code is left exactly as committed in
+`<bits/signum.h>`, a glibc-internal header that current glibc no longer
+ships (2.39 on Ubuntu 24.04 has `signum-arch.h` and `signum-generic.h` in
+its place). Replacing that include with `<csignal>` gets it building again
+on Ubuntu 24.04 with GCC 13, with one format warning about printing a
+`std::thread::id` through `%d`, and `nc localhost 3490` then echoes. The code is left exactly as committed in
 2017; the fix is noted here rather than applied.
 
 ## Known rough edges
